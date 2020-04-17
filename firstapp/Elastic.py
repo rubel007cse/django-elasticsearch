@@ -6,6 +6,8 @@ from elasticsearch_dsl import MultiSearch, Search
 from django.http import HttpResponse
 import json
 from haystack.query import SearchQuerySet
+from elasticsearch import Elasticsearch
+
 
 
 def index(request):
@@ -46,21 +48,31 @@ def index(request):
                  "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
                  "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"]
 
+    client = Elasticsearch()
+    response = client.search(
+        index="blogpost-index-v4",
+        body={
+                "query": {
+                    "fuzzy": {
+                        "title": {
+                            "value": "blayer"
+                        }
+                    }
+                }
+            }
+    )
+
+    alldata =response['hits']['hits']
+
+
+    bloodytitles = []
+
+    for data in alldata:
+        bloodytitles.append(data['_source']['title'])
+
+
     # print('Output is', list(articles))
-    return render(request, 'index5.html', {'articles': countries})
-
-    # articles = ['Title 1', 'Title 2', 'Article 1', 'Article 2']
-    # if input:
-    #     for inputs in articles:
-    #         print('Array Item', inputs)
-    #         if inputs == input:
-    #             print('matched!')
-    #             return render(request, 'index5.html', {'articles': articles})
-    #         else: return render(request, 'index5.html', {'articles': ['Mosharrof', "Mohan", "Moharruf"]})
-    # else:
-    #     return render(request, 'index5.html', {'articles': ['Mosharrof', "Mohan", "Moharruf"]})
-
-
+    return render(request, 'index5.html', {'articles': bloodytitles})
 
 
 
@@ -85,7 +97,7 @@ def add(request):
 
     #Post.init()
     # create and save and article
-    article = BlogPost(title='Moshq Rubel', author='mohanrubel', posted_date='2020-04-15', text='Content is about mosharrof rubel')
+    article = BlogPost(title='blayer bush', author='blayerbhai bush', posted_date='2020-04-15', text='Amaderbush blayerbhai2')
     article.indexing()
 
     return HttpResponse("Added!")

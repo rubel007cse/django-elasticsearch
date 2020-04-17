@@ -9,26 +9,26 @@ from .models import BlogPostIndex
 # Making the connection
 connections.create_connection(hosts=['localhost'], timeout=20)
 
-client = Elasticsearch()
+
 
 
 def experiment(request):
 
-    inputs = '2'
-    search = Search(index='blogpost-index-v4')
+    client = Elasticsearch()
+    response = client.search(
+        index="blogpost-index-v4",
+        body={
+                "query": {
+                    "fuzzy": {
+                        "title": {
+                            "value": "blayer"
+                        }
+                    }
+                }
+            }
+    )
 
-    print('total indexed search sugges', search.filter('match', title_suggest=inputs).count())
 
-    query = search.suggest(
-        'title-suggestions',
-        inputs,
-        completion={
-        'field': 'title_suggest',
-        'fuzzy': True
-        })
 
-    s = query.execute()
-    print('hola', s.to_dict())
-
-    return render(request, 'index2.html', {'response': s, 'inputs': inputs})
+    return render(request, 'index2.html', {'response': response, 'inputs': ''})
 

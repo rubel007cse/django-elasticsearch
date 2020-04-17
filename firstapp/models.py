@@ -11,6 +11,7 @@ class BlogPostIndex(Document):
     author = Text()
     posted_date = Date()
     title = Text()
+    #title_suggest = Completion()
     text = Text()
 
     class Index:
