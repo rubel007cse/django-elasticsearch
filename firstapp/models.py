@@ -2,13 +2,8 @@ import elasticsearch_dsl as es
 from django_elasticsearch_dsl import Document, Index
 from django.db import models
 from django.utils import timezone
-from elasticsearch_dsl import Document, Text, Date, Search
+from elasticsearch_dsl import Document, Text, Date, Search, Completion
 
-
-class Post(Document):
-    title = es.Text()
-    blog = es.Text()
-    image = es.Text()
 
 
 # ElasticSearch "model" mapping out what fields to index
@@ -19,7 +14,7 @@ class BlogPostIndex(Document):
     text = Text()
 
     class Index:
-        name = 'blogpost-index'
+        name = 'blogpost-index-v4'
 
 # Blogpost to be indexed into ElasticSearch
 class BlogPost(models.Model):
@@ -39,3 +34,14 @@ class BlogPost(models.Model):
         )
         obj.save()
         return obj.to_dict(include_meta=True)
+
+
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    body = models.TextField()
+    pub_date = models.DateField(default=timezone.now)
+
+    def __unicode__(self):
+        return self.title

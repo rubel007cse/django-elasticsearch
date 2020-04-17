@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'firstapp',
-    'django_elasticsearch_dsl'
+    'django_elasticsearch_dsl',
+    'cars',
+    'whoosh',
+    'haystack',
+    'rest_framework',
+
 ]
 
 ELASTICSEARCH_DSL = {
@@ -54,6 +59,15 @@ ES_CONNECTIONS = {
 }
 ## Project: https://github.com/adamwattis/elasticsearch-example/
 ES_DEFAULT_BATCH_SIZE = 1000
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': 'C:/Users/Mosharrof/1Pycharms/elasticdjango/firstapp/whoosh_path/'
+    },
+
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,12 +103,12 @@ WSGI_APPLICATION = 'elasticdjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 #
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 # Password validation

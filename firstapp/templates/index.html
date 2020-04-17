@@ -3,34 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
+
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+            crossorigin="anonymous"></script>
+    <script>
+
+        $(function(){
+
+        $('#search').keyup(function() {
+
+            $.ajax({
+                type: "POST",
+                url: "/",
+                data: {
+                    'search_text' : $('#search').val(),
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: searchSuccess,
+                dataType: 'html'
+            });
+
+        });
+
+    });
+
+    function searchSuccess(data, textStatus, jqXHR)
+    {
+        $('#search-results').html(data);
+    }
+
+    </script>
+
 </head>
 <body>
-<H4>Requirements</H4>
-<ui>
-    <li>Download and Install Java: <a href="https://www.java.com/en/download/" target="_blank">https://www.java.com/en/download/</a> </li>
-    <li>Download Elastic Search: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank">https://www.elastic.co/downloads/elasticsearch</a> </li>
-    <li>After Download Unzip folder, go to 'bin' folder and double click on 'elasticsearch.bat' </li>
-    <li>Server will be started at here: <a href="http://localhost:9200/" target="_blank">http://localhost:9200/</a> </li>
-    <li>Install the package: <a href="http://localhost:9200/" target="_blank">https://github.com/sabricot/django-elasticsearch-dsl</a> </li>
-    <li>pip install django-elasticsearch-dsl</li>
-</ui>
 
-<br />
-<br />
-<br />
 
-<form action="" method="post">
-     {% csrf_token %}
-    <input type="text" name="searchinput" placeholder="search here">
-</form>
+<br/>
+<br/>
+<br/>
 
-<br /> <br />
-<p>Output: </p>
 
-{% for p in posts %}
-    {{p.title}}
-    {{p.author}}
-{% endfor %}
+<ul>
+    <li><a href="/articles/all">Articles</a></li>
+    <li><a href="/articles/create">Create Article</a></li>
+    search_text
+</ul>
+
+<h3>Search</h3>
+{% csrf_token %}
+<input type="text" id="search" autocomplete="off" name="search"/>
+
+<ul id="search-results">
+
+    {% if articles.count > 0 %}
+
+    {% for article in articles %}
+
+    <li><a href="">{{ article.object.title }}</a></li>
+    {{ article.object.body }}
+
+    {% endfor %}
+
+    {% else %}
+
+    <p>None to show!</p>
+
+    {% endif %}
+
+
+</ul>
 
 
 </body>

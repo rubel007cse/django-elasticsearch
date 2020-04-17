@@ -14,12 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from firstapp.Elastic import index,add
+from django.urls import path, include
+from firstapp.Elastic import index,add, hays
+from firstapp.ElasticV2 import experiment
+from firstapp.Indexing import bulk_indexing
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, ),
+    path('hays', hays, ),
     path('add', add, ),
+    path('bulk_indexing', bulk_indexing, ),
+    path('experiment', experiment, name='experiment'),
+    path('cars/', include('cars.urls', namespace='cars')),
+    path('search/', include('haystack.urls'))
 ]

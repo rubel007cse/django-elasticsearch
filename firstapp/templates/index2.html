@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+
+
+<br />
+
+
+<br /> <br />
+<p>Output for input '{{inputs}}' : </p>
+
+{% for p in response %}
+    <p>{{forloop.counter}} : Title: {{p.title}}, Author: {{p.author}}, Text: {{p.text}}</p>
+{% endfor %}
+
+
+<br />
+____________________________________________________________
+<br /> <br />
+
+{{response}}
+
+</body>
+</html>
