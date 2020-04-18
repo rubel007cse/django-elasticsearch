@@ -22,7 +22,7 @@ from firstapp.Indexing import bulk_indexing
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, ),
+    path('', index, name='/' ),
     path('hays', hays, ),
     path('add', add, ),
     path('bulk_indexing', bulk_indexing, ),
