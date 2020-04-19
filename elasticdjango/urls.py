@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from firstapp.Elastic import index,add, hays
+from firstapp.Elastic import index,add, hays, searchdata
 from firstapp.ElasticV2 import experiment
 from firstapp.Indexing import bulk_indexing
+from django.views.generic import TemplateView
+from django.conf.urls import url
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='/' ),
+    path('', index, name='/'),
+    path('searchresults/', searchdata, name='searchresults'),
     path('hays', hays, ),
     path('add', add, ),
     path('bulk_indexing', bulk_indexing, ),

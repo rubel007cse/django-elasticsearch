@@ -7,19 +7,27 @@ from django.http import HttpResponse
 import json
 from haystack.query import SearchQuerySet
 from elasticsearch import Elasticsearch
-import random
+import random, json
+
+client = Elasticsearch()
 
 
 def index(request):
 
+    return render(request, 'index5.html', {'alldata': [] })
+
+
+
+
+
+
+
+def searchdata(request):
 
     input = request.POST.get('search_text','None')
     print('Input is: ', input)
 
-    #articles = SearchQuerySet().autocomplete(content_auto=input)
 
-
-    client = Elasticsearch()
     response = client.search(
         index="blogpost-index-v4",
         body={
@@ -45,7 +53,12 @@ def index(request):
 
 
     print('Output Array is: ', bloodytitles)
-    return render(request, 'index5.html', {'articles': bloodytitles, 'dummy': random.randint(3, 9) })
+
+    finaldata = {}
+    finaldata['status'] = 'success'
+    finaldata['alladata'] = bloodytitles
+
+    return HttpResponse(json.dumps(finaldata), content_type="application/json")
 
 
 

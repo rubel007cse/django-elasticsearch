@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load custom_tags %}
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,13 +196,13 @@ function autocomplete(inp, arr) {
         $('#myInput').keyup(function() {
             $.ajax({
                 type: "POST",
-                url: "/",
+                url: "searchresults/",
+                dataType: "json",
                 data: {
                     'search_text' : $('#myInput').val(),
                     'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
                 },
-                success: searchSuccess,
-                dataType: 'html'
+                success: searchSuccess
             });
         });
     });
@@ -208,13 +210,14 @@ function autocomplete(inp, arr) {
 
     function searchSuccess(data, textStatus, jqXHR)
     {
+             $('#output').html(data);
+            var shit = data.alladata;
+           autocomplete ( document.getElementById("myInput") , shit );
 
-            var shit =  {{articles|safe}};
-            autocomplete ( document.getElementById("myInput") , shit );
 
 
-            $('#thedata').html(data);
-            console.log('Response from ES: ', shit);
+            console.log('Hello.. printing logs..');
+            console.log('Response from ES: ', data.alladata);
 
 
 
@@ -227,9 +230,31 @@ function autocomplete(inp, arr) {
     </script>
 
 
+<script>
+
+$(document).ready(function() {
+        $("#myInput2").keyup(function() {
+            var input = $("#myInput2").val();
+            console.log('inout is, ', input);
+            $.post("searchresults/", {
+                'search_text' : $('#myInput2').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            }, function(data, status){
+                console.log('status is, ', status);
+                $("#output").html(data);
+            });
+        });
+    }
+);
+
+</script>
+
+
 </head>
 <body>
 
+herw
+<p id="output"></p>
 
 <center>
     <h2>Django Autocomplete from ElasticSearch</h2>
